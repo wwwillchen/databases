@@ -23,7 +23,6 @@ dbConnection.connect();
 exports.findAllMessages = function(cb){
   //invoke the callback with err and pass it an object with all messages;
   dbConnection.query('SELECT * FROM messages', function(err, rows, fields) {
-    console.log(rows);
     cb(err, rows);
   })
 };
@@ -31,13 +30,20 @@ exports.findAllMessages = function(cb){
 exports.findUser = function(username, cb){
   //invoke the callback with err and results message array as 2nd argument;
   dbConnection.query('SELECT * FROM users where username=?', [username], function(err, rows) {
-    console.log(rows);
     cb(err, rows);
   });
 };
 
 exports.saveUser = function(username, cb){
+  dbConnection.query('INSERT INTO users (username) values (?)', [username], function(err, rows){
+    dbConnection.query('SELECT * FROM users where username=?', [username], function(err, rows) {
+      cb(rows);
+    })
+  });
 };
 
 exports.saveMessage = function(message, userid, roomname, cb){
+  dbConnection.query('INSERT INTO messages (user_id, textMessage, roomname) values (?, ?, ?)', [userid, message, roomname], function(err, rows){
+    cb();
+  })
 };
