@@ -10,9 +10,9 @@ var serverHelpers = require('./server-helpers');
 
 var port = 3000;
 var ip = "127.0.0.1";
-
+// console.log('right before router');
 var router = function(req, res) {
-
+  console.log('got to router');
   var path = url.parse(req.url).pathname;
   var method = req.method;
 
@@ -28,7 +28,7 @@ var router = function(req, res) {
       handlers.sendOptionsResponse(req, res);
     }
   } else {
-    handlers.sendResponse(res, '', 404);
+    serverHelpers.sendResponse(res, '', 404);
   }
 };
 

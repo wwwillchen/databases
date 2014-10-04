@@ -31,7 +31,6 @@ describe("Persistent Node Chat Server", function() {
 
   it("Should insert posted messages to the DB", function(done) {
     // Post a message to the node chat server:
-    console.log('in test#1');
     request({method: "POST",
              uri: "http://127.0.0.1:3000/classes/messages",
              json: {username: "Valjean",
@@ -41,9 +40,10 @@ describe("Persistent Node Chat Server", function() {
             function () {
               /* Now if we look in the database, we should find the
                * posted message there. */
-               console.log('request',request,'request.json',request.json);
-              var queryString = "INSERT INTO messages (username, textMessage, roomname) values (json.username,json.message,json.roomname)";
-              var queryArgs = [];
+              console.log(request);
+              var queryString = "INSERT INTO messages (username, textMessage, roomname) values (?,?,?)";
+              // "INSERT INTO messages (username, textMessage, roomname) values (json.username,json.message,json.roomname)"
+              var queryArgs = [json.username, json.messages, json.roomname];
               /* TODO: Change the above queryString & queryArgs to match your schema design
                * The exact query string and query args to use
                * here depend on the schema you design, so I'll leave

@@ -13,7 +13,7 @@ var dbConnection = mysql.createConnection({
 
 dbConnection.connect();
 /* Now you can make queries to the Mysql database using the
- * dbConnection.query() method.
+ * dbConnection.query() method.''
  * See https://github.com/felixge/node-mysql for more details about
  * using this module.*/
 
@@ -21,9 +21,19 @@ dbConnection.connect();
 
 
 exports.findAllMessages = function(cb){
+  //invoke the callback with err and pass it an object with all messages;
+  dbConnection.query('SELECT * FROM messages', function(err, rows, fields) {
+    console.log(rows);
+    cb(err, rows);
+  })
 };
 
 exports.findUser = function(username, cb){
+  //invoke the callback with err and results message array as 2nd argument;
+  dbConnection.query('SELECT * FROM users where username=?', [username], function(err, rows) {
+    console.log(rows);
+    cb(err, rows);
+  });
 };
 
 exports.saveUser = function(username, cb){
