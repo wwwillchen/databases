@@ -1,30 +1,42 @@
 var mysql = require('mysql');
-/* If the node mysql module is not found on your system, you may
- * need to do an "sudo npm install -g mysql". */
+var db = require('./db');
+var Sequelize = require("sequelize"),
+  sequelize = new Sequelize("chatter", "root", "hack");
 
-/* You'll need to fill the following out with your mysql username and password.
- * database: "chat" specifies that we're using the database called
- * "chat", which we created by running schema.sql.*/
-var dbConnection = mysql.createConnection({
-  user: "root",
-  password: "hack",
-  database: "chat"
+
+
+var User = sequelize.define('User', {
+  userid: { type: Sequelize.INTEGER,
+            autoincrement: true },
+  username: Sequelize.STRING,
 });
 
-dbConnection.connect();
-/* Now you can make queries to the Mysql database using the
- * dbConnection.query() method.''
- * See https://github.com/felixge/node-mysql for more details about
- * using this module.*/
+var Message = sequelize.define('Message', {
+  userid: { type: Sequelize.INTEGER,
+            autoincrement: true },
+  text: Sequelize.STRING,
+  roomname: Sequelize.STRING
+});
 
-
+var Room = sequelize.define('Room', {
+  userid: { type: Sequelize.INTEGER,
+            autoincrement: true },
+  text: Sequelize.STRING,
+  roomname: Sequelize.STRING
+});
 
 
 exports.findAllMessages = function(cb){
+  Message.sync().success(function() {
+    Message.findAll().success(function(msgs) {
+      cb(null, msgs);
+    });
+  });
+
   //invoke the callback with err and pass it an object with all messages;
-  dbConnection.query('SELECT * FROM messages', function(err, rows, fields) {
-    cb(err, rows);
-  })
+  // dbConnection.query('SELECT * FROM messages', function(err, rows, fields) {
+  //   cb(err, rows);
+  // })
 };
 
 exports.findUser = function(username, cb){
