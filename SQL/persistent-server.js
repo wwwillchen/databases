@@ -20,6 +20,7 @@ var router = function(req, res) {
 
   if (path === '/classes/messages') {
     if (method === 'POST') {
+      console.log('got into post');
       handlers.postMessage(req, res);
     } else if (method === 'GET') {
       handlers.getMessages(req, res);
