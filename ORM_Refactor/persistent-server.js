@@ -4,8 +4,6 @@
 
 var http = require("http");
 var url = require('url');
-var Sequelize = require("sequelize");
-var sequelize = new Sequelize("chatter", "root", "hack");
 
 var handlers = require('./request-handler');
 var serverHelpers = require('./server-helpers');
